@@ -5,7 +5,7 @@ env:
   Branch: ${{github.ref_name}}
   Platform: #Any CPU|Win32|x64
   Configuration: Release
-  Artifacts: build/$Configuration
+  Artifacts: Release
   Solution: ${{github.event.repository.name}}.sln # .
   Executable: ${{github.event.repository.name}}.exe # *
   
@@ -51,12 +51,12 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: "${{github.event.repository.name}}_r${{env.CommitCount}}@${{env.CommitHashShort}}"
-        path: "${{github.workspace}}/${{env.Artifacts}}/"
+        path: "${{github.workspace}}/${{env.Artifacts}}/${{env.Executable}}"
 
     - name: Compress artifacts
       uses: vimtor/action-zip@v1.1
       with:
-        files: '${{env.Artifacts}}/'
+        files: '${{env.Artifacts}}/${{env.Executable}}'
         dest: "build/${{github.event.repository.name}}_r${{env.CommitCount}}@${{env.CommitHashShort}}.zip"
 
     - name: GitHub pre-release
